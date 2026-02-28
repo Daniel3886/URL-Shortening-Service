@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: URL-Shortening-Service
+
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+
+  liquibase:
+    change-log: classpath:db/changelog/app-changelog.xml
+    default-schema: liquibase_db
