@@ -1,7 +1,7 @@
 package org.springboot.urlshorteningservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springboot.urlshorteningservice.dto.CreateUrlRequest;
+import org.springboot.urlshorteningservice.dto.UrlRequest;
 import org.springboot.urlshorteningservice.dto.ShortCodeRequest;
 import org.springboot.urlshorteningservice.dto.UrlResponse;
 import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
@@ -20,15 +20,9 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping
-    public UrlResponse shortenUrl(@RequestBody CreateUrlRequest urlRequest) {
+    public UrlResponse shortenUrl(@RequestBody UrlRequest urlRequest) {
         return urlService.shortenUrl(urlRequest);
     }
-
-    @GetMapping("/{shortCode}/details")
-    public UrlStatsResponse getUrlDetails(@PathVariable ShortCodeRequest shortCode) {
-        return urlService.getUrlByShortCode(shortCode);
-    }
-
 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable ShortCodeRequest shortCode){
@@ -40,5 +34,17 @@ public class UrlController {
                 .build();
     }
 
+    @PutMapping("/{shortCode}")
+    public UrlResponse updateUrl(
+            @PathVariable ShortCodeRequest shortCode,
+            @RequestBody UrlRequest urlRequest
+    ) {
+        return urlService.updateUrl(shortCode, urlRequest);
+    }
+
+    @GetMapping("/{shortCode}/details")
+    public UrlStatsResponse getUrlDetails(@PathVariable ShortCodeRequest shortCode) {
+        return urlService.getUrlByShortCode(shortCode);
+    }
 
 }

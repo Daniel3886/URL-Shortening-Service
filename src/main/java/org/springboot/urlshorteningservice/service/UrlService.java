@@ -1,7 +1,7 @@
 package org.springboot.urlshorteningservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springboot.urlshorteningservice.dto.CreateUrlRequest;
+import org.springboot.urlshorteningservice.dto.UrlRequest;
 import org.springboot.urlshorteningservice.dto.ShortCodeRequest;
 import org.springboot.urlshorteningservice.dto.UrlResponse;
 import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
@@ -28,7 +28,7 @@ public class UrlService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    public UrlResponse shortenUrl(CreateUrlRequest request) throws InvalidUrlException {
+    public UrlResponse shortenUrl(UrlRequest request) throws InvalidUrlException {
 
         validateUrl(request.getUrl());
 
@@ -65,6 +65,22 @@ public class UrlService {
         return url.getUrl();
     }
 
+    public UrlResponse updateUrl(ShortCodeRequest shortCode, UrlRequest urlRequest) {
+        Url url = findByShortCode(shortCode);
+        validateUrl(urlRequest.getUrl());
+
+        url.setUrl(urlRequest.getUrl());
+        url.setUpdatedAt(LocalDateTime.now());
+        repository.save(url);
+
+        return UrlResponse.builder()
+                .id(url.getId())
+                .url(urlRequest.getUrl())
+                .shortCode(shortCode.getShortCode())
+                .createdAt(url.getCreatedAt())
+                .updatedAt(url.getUpdatedAt())
+                .build();
+    }
     private Url findByShortCode(ShortCodeRequest shortCode) {
         if(shortCode.getShortCode().isEmpty()){
             throw new IllegalArgumentException("Short code is empty");
@@ -98,4 +114,5 @@ public class UrlService {
 
         return sb.toString();
     }
+
 }
