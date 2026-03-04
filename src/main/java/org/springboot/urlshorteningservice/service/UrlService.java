@@ -50,13 +50,7 @@ public class UrlService {
     }
 
     public UrlStatsResponse getUrlByShortCode(ShortCodeRequest shortCode) {
-        if(shortCode.getShortCode().isEmpty()){
-            throw new IllegalArgumentException("Short code is empty");
-        }
-
-        Url url = repository.findByShortCode(shortCode.getShortCode())
-                .orElseThrow(() -> new IllegalArgumentException("Short code not found"));
-
+        Url url = findByShortCode(shortCode);
         return new UrlStatsResponse(
             url.getId(),
             url.getUrl(),
@@ -67,14 +61,17 @@ public class UrlService {
     }
 
     public String getRedirectUrl(ShortCodeRequest shortCode) {
+        Url url = findByShortCode(shortCode);
+        return url.getUrl();
+    }
+
+    private Url findByShortCode(ShortCodeRequest shortCode) {
         if(shortCode.getShortCode().isEmpty()){
             throw new IllegalArgumentException("Short code is empty");
         }
 
-        Url original = repository.findByShortCode(shortCode.getShortCode())
+        return repository.findByShortCode(shortCode.getShortCode())
                 .orElseThrow(() -> new IllegalArgumentException("Short code not found"));
-
-        return original.getUrl();
     }
 
     private void validateUrl(String url) throws InvalidUrlException {
