@@ -21,8 +21,11 @@ public class Url {
     private String shortCode;
 
     @Column(nullable = false, length = 2048)
-    private String originalUrl;
+    private String url;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime updatedAt;
 }
