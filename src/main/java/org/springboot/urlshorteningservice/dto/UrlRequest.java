@@ -4,6 +4,6 @@ package org.springboot.urlshorteningservice.dto;
 import lombok.Data;
 
 @Data
-public class CreateUrlRequest {
+public class UrlRequest {
     private String url;
 }
