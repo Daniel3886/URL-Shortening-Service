@@ -19,8 +19,10 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping
-    public UrlResponse shortenUrl(@RequestBody UrlRequest urlRequest) {
-        return urlService.shortenUrl(urlRequest);
+    public ResponseEntity<UrlResponse> shortenUrl(@RequestBody UrlRequest urlRequest) {
+
+        UrlResponse response =  urlService.shortenUrl(urlRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{shortCode}")
@@ -42,11 +44,12 @@ public class UrlController {
     }
 
     @DeleteMapping("/{shortCode}")
-    public String deleteUrl(@PathVariable String shortCode) {
-        return urlService.removeUrl(shortCode);
+    public ResponseEntity<Void> deleteUrl(@PathVariable String shortCode) {
+        urlService.removeUrl(shortCode);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{shortCode}/details")
+    @GetMapping("/{shortCode}/stats")
     public UrlStatsResponse getUrlDetails(@PathVariable String shortCode) {
         return urlService.getUrlByShortCode(shortCode);
     }

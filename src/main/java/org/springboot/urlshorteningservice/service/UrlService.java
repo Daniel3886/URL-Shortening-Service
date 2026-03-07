@@ -7,7 +7,9 @@ import org.springboot.urlshorteningservice.dto.UrlResponse;
 import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
 import org.springboot.urlshorteningservice.model.Url;
 import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.InvalidUrlException;
 
 import java.net.URI;
@@ -41,7 +43,7 @@ public class UrlService {
 
         return UrlResponse.builder()
                 .id(entity.getId())
-                .url(domain + "shorten/" + shortCode) // TODO Figure out if this shorten/url is needed or can be removed
+                .url(domain + "shorten/" + shortCode)
                 .shortCode(shortCode)
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
@@ -99,7 +101,7 @@ public class UrlService {
     private void validateUrl(String url) throws InvalidUrlException {
         try {
             if(url.isEmpty()){
-                throw new InvalidUrlException("URL is empty");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL is empty");
             }
 
             URI uri = new URI(url);
