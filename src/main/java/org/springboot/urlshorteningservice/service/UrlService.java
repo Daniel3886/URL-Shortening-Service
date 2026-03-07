@@ -1,6 +1,7 @@
 package org.springboot.urlshorteningservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springboot.urlshorteningservice.dto.UrlRequest;
 import org.springboot.urlshorteningservice.dto.UrlResponse;
 import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
@@ -19,9 +20,8 @@ import java.time.LocalDateTime;
 public class UrlService {
 
     private final UrlRepo repository;
-    // TODO Use in application.yml and dont hardcode the variable
-    private final String domain = "http://localhost:8080/";
-
+    @Value("${app.base-url}")
+    private String domain;
     private static final String BASE62 =
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
