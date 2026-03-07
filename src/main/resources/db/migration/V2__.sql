@@ -1,11 +1,6 @@
 ALTER TABLE url
-    ADD url VARCHAR(2048);
+    ADD COLUMN updated_at TIMESTAMP;
 
 UPDATE url
-SET url = original_url,
-    updated_at = now()
-where url is null;
-
-ALTER TABLE url
-    DROP
-        COLUMN original_url;
+SET updated_at = now()
+WHERE updated_at IS NULL;
