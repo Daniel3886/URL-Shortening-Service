@@ -41,6 +41,11 @@ public class UrlController {
         return urlService.updateUrl(shortCode, urlRequest);
     }
 
+    @DeleteMapping("/{shortCode}")
+    public String deleteUrl(@PathVariable String shortCode) {
+        return urlService.removeUrl(shortCode);
+    }
+
     @GetMapping("/{shortCode}/details")
     public UrlStatsResponse getUrlDetails(@PathVariable String shortCode) {
         return urlService.getUrlByShortCode(shortCode);

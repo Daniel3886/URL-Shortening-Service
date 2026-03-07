@@ -80,8 +80,15 @@ public class UrlService {
                 .updatedAt(url.getUpdatedAt())
                 .build();
     }
-    private Url findByShortCode(ShortCodeRequest shortCode) {
-        if(shortCode.getShortCode().isEmpty()){
+
+    public String removeUrl(String shortCode) {
+        Url url = findByShortCode(shortCode);
+        repository.delete(url);
+
+        return "Url has been removed with the Code: " + shortCode;
+    }
+    private Url findByShortCode(String shortCode) {
+        if(shortCode.isEmpty()){
             throw new IllegalArgumentException("Short code is empty");
         }
 
