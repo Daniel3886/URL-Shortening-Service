@@ -83,11 +83,9 @@ public class UrlService {
                 .build();
     }
 
-    public String removeUrl(String shortCode) {
+    public void removeUrl(String shortCode) {
         Url url = findByShortCode(shortCode);
         repository.delete(url);
-
-        return "Url has been removed with the Code: " + shortCode;
     }
     private Url findByShortCode(String shortCode) {
         if(shortCode.isEmpty()){
