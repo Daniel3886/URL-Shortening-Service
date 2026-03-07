@@ -1,11 +1,15 @@
 spring:
   application:
     name: URL-Shortening-Service
+  jpa:
+    hibernate:
+      ddl-auto: validate
 
   datasource:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   flyway:
     enabled: true
