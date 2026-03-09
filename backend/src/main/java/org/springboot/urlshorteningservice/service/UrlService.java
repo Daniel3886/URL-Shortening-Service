@@ -36,6 +36,7 @@ public class UrlService {
         Url entity = new Url();
         entity.setUrl(request.getUrl());
         entity.setCreatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now());
         String shortCode = generateShortcode();
         entity.setShortCode(shortCode);
 
@@ -120,5 +121,4 @@ public class UrlService {
 
         return sb.toString();
     }
-
 }
