@@ -1,8 +1,5 @@
-import React from 'react'
-import { RefreshCw } from 'lucide-react'
 import { Button } from './ui/button'
 import { InputInline } from './ui/inline'
-import { HeroHeader } from './header'
 import { InputButtonGroup } from './ui/input-button-group'
 
 export default function HeroSection() {
