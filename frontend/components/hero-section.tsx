@@ -1,5 +1,5 @@
-import { OriginalUrlLookup } from './url-lookup-stats'
 import { ShortenUrlForm } from './shorten-url-form'
+import { UrlLookupStats } from './url-lookup-stats'
 
 export default function HeroSection() {
     return (
@@ -26,7 +26,7 @@ export default function HeroSection() {
                         Your Links
                     </h2>
 
-                    <OriginalUrlLookup />
+                    <UrlLookupStats />
                 </div>
             </section>
         </>

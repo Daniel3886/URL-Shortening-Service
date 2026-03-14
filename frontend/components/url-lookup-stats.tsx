@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { InputInline } from "@/components/ui/inline"
-import { OriginalUrlResult } from "@/components/url-result-stats"
 import { apiClient } from "@/lib/api"
+import { UrlResultStats } from "./url-stats-result"
 
 type LookupResponse = {
   shortCode?: string
@@ -11,7 +11,7 @@ type LookupResponse = {
   url?: string
 }
 
-export function OriginalUrlLookup() {
+export function UrlLookupStats() {
   const [shortCode, setShortCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -60,7 +60,7 @@ export function OriginalUrlLookup() {
         <p className="mt-3 text-left text-sm text-destructive">{error}</p>
       ) : null}
 
-      {result ? <OriginalUrlResult {...result} /> : null}
+      {result ? <UrlResultStats shortCode={result.shortCode} url={result.originalUrl} /> : null}
     </div>
   )
 }

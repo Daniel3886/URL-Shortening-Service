@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { InputButtonGroup } from "@/components/ui/input-button-group"
-import { ShortUrlResult } from "@/components/short-url-result"
 import { apiClient } from "@/lib/api"
 import type { CreateUrlRequest } from "@/lib/types"
+import { UrlResultStats } from "./url-stats-result"
+import { OriginalUrlResult } from "./original-url-result"
 
 type CreateResponse = {
   shortCode: string
@@ -52,9 +53,9 @@ export function ShortenUrlForm() {
       ) : null}
 
       {result ? (
-        <ShortUrlResult
+        <OriginalUrlResult
           shortCode={result.shortCode}
-          shortUrl={apiClient.getRedirectUrl(result.shortCode)}
+          originalUrl={apiClient.getRedirectUrl(result.shortCode)}
         />
       ) : null}
     </div>
