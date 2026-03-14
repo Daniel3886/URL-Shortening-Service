@@ -35,23 +35,13 @@ class ApiClient {
   }
 
 
-  async CreateShortUrl(data: CreateUrlRequest): Promise<ShortenedUrl> {
+  async createShortUrl(data: CreateUrlRequest): Promise<ShortenedUrl> {
     const response = await fetch(`${this.baseUrl}/shorten`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
-    return this.handleResponse<ShortenedUrl>(response);
-  }
-
-  async getOriginalUrl(shortCode: string): Promise<ShortenedUrl> {
-    const response = await fetch(`${this.baseUrl}/shorten/${shortCode}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
     return this.handleResponse<ShortenedUrl>(response);
   }

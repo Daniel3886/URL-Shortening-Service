@@ -1,6 +1,5 @@
-import { Button } from './ui/button'
-import { InputInline } from './ui/inline'
-import { InputButtonGroup } from './ui/input-button-group'
+import { OriginalUrlLookup } from './url-lookup-stats'
+import { ShortenUrlForm } from './shorten-url-form'
 
 export default function HeroSection() {
     return (
@@ -17,18 +16,17 @@ export default function HeroSection() {
                 </p>
 
                 <div className="mt-10 w-full max-w-2xl">
-                    <InputButtonGroup />
+                    <ShortenUrlForm />
                 </div>
             </main>
 
             <section className="px-6 pb-16">
                 <div className="mx-auto max-w-2xl">
-                    <div className="mb-6 flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-foreground">Your Links</h2>
-                        <Button variant="ghost"size="sm"></Button>
-                    </div>
+                    <h2 className="mb-6 text-left text-xl font-semibold text-foreground">
+                        Your Links
+                    </h2>
 
-                    <InputInline />
+                    <OriginalUrlLookup />
                 </div>
             </section>
         </>
