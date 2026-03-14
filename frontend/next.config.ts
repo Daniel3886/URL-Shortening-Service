@@ -1,19 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
-  turbopack: {
-    root: __dirname,
-  },
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-    localeDetection: false,
-  },
-}
+import type { NextConfig } from "next";
 
-export default nextConfig
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
