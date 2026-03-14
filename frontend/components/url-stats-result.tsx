@@ -85,7 +85,6 @@ export function UrlResultStats({
 
   const handleDelete = async () => {
     if (isRemoved) return
-    if (!confirm("Are you sure you want to delete this shortened URL?")) return
 
     setIsDeleting(true)
     setErrorMessage("")
