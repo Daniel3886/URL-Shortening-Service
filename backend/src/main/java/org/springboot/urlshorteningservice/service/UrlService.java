@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -94,21 +95,21 @@ public class UrlService {
         }
 
         return repository.findByShortCode(shortCode)
-                .orElseThrow(() -> new IllegalArgumentException("Short code not found"));
+                .orElseThrow(() -> new NoSuchElementException("Short code not found"));
     }
 
     private void validateUrl(String url) throws InvalidUrlException {
         try {
             if(url.isEmpty()){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL is empty");
+                throw new IllegalArgumentException("URL is empty");
             }
 
             URI uri = new URI(url);
             if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme())) {
-                throw new InvalidUrlException("URL must start with http or https");
+                throw new IllegalArgumentException("URL must start with http or https");
             }
         } catch (URISyntaxException e){
-            throw new InvalidUrlException("Invalid URL format: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid URL format: " + e.getMessage());
         }
     }
 
