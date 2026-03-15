@@ -10,19 +10,14 @@ class ApiClient {
     this.baseUrl = baseUrl;
   }
 
-    private async handleResponse<T>(response: Response): Promise<T> {
+  private async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
+      const backendMessage = await response.text();
+
       const error: ApiError = {
-        message: response.statusText || "An error occurred",
+        message: backendMessage,
         status: response.status,
       };
-
-      if (response.status === 404) {
-        error.message = "Short URL not found";
-      } else if (response.status === 400) {
-        const data = await response.json().catch(() => ({}));
-        error.message = data.message || "Invalid request";
-      }
 
       throw error;
     }
@@ -32,7 +27,7 @@ class ApiClient {
     }
 
     return response.json();
-  }
+}
 
 
   async createShortUrl(data: CreateUrlRequest): Promise<ShortenedUrl> {

@@ -3,8 +3,7 @@
 import { useState } from "react"
 import { InputButtonGroup } from "@/components/ui/input-button-group"
 import { apiClient } from "@/lib/api"
-import type { CreateUrlRequest } from "@/lib/types"
-import { UrlResultStats } from "./url-stats-result"
+import type { ApiError, CreateUrlRequest } from "@/lib/types"
 import { OriginalUrlResult } from "./original-url-result"
 
 type CreateResponse = {
@@ -23,16 +22,17 @@ export function ShortenUrlForm() {
     setIsLoading(true)
     setError("")
     setResult(null)
-
+    
     try {
       const response = (await apiClient.createShortUrl({
         url: url.trim(),
-      } as CreateUrlRequest)) as CreateResponse
-
+      } as CreateUrlRequest))
+      
       setResult(response)
       setUrl("")
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to shorten URL")
+      const apiError = err as ApiError
+      setError(apiError.message || "An error occurred")
     } finally {
       setIsLoading(false)
     }
