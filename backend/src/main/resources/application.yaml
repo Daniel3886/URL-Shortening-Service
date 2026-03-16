@@ -6,9 +6,9 @@ spring:
       ddl-auto: validate
 
   datasource:
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DATASOURCE_USERNAME:postgres}
+    password: ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   flyway:
@@ -17,4 +17,4 @@ spring:
     baseline-on-migrate: true
 
 app:
-  base-url: ${BASE_URL}
+  base-url: ${BASE_URL:localhost:8080/}
