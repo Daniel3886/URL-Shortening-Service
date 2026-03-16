@@ -1,6 +1,11 @@
 import { ApiError, CreateUrlRequest, ShortenedUrl, ShortenedUrlStats } from "./types";
 
-const API_BASE_URL = "http://localhost:8080";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if(!API_BASE_URL) {
+  throw new Error("API base URL is not defined. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables.");
+}
 
 class ApiClient {
 
