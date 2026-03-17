@@ -16,6 +16,15 @@ class ApiClient {
   }
 
   private async handleResponse<T>(response: Response): Promise<T> {
+    if (response.status === 429) {
+      const retryAfter = response.headers.get("Retry-After") || "60";
+      const error: ApiError = {
+        message: `Too many requests. Try again in ${retryAfter} seconds.`,
+        status: 429,
+      };
+      throw error;
+    }
+
     if (!response.ok) {
       const backendMessage = await response.text();
 

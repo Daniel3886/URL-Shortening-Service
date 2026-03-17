@@ -41,7 +41,8 @@ export function UrlLookupStats() {
         originalUrl,
       })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch URL")
+      const errorMessage = (err as { message?: string }).message ?? "Failed to fetch URL"
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
