@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Check, Copy } from "lucide-react"
+import { AlertCircle, Check, Copy } from "lucide-react"
 
 type OriginalUrlResultProps = {
   shortCode: string
@@ -39,6 +39,10 @@ export function OriginalUrlResult({ shortCode, originalUrl }: OriginalUrlResultP
       <p className="mt-2 text-sm text-muted-foreground">
         Short Code: <span className="font-mono">{shortCode}</span>
       </p>
+      <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 p-3 border border-amber-200">
+        <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
+        <p className="text-sm text-amber-800">This code will expire in 24 hours</p>
+      </div>
     </div>
   )
 }
