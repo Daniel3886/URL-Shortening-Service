@@ -7,9 +7,8 @@ import org.springboot.urlshorteningservice.dto.UrlResponse;
 import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
 import org.springboot.urlshorteningservice.model.Url;
 import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
-import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.InvalidUrlException;
 
 import java.net.URI;
@@ -17,6 +16,7 @@ import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Service
@@ -89,6 +89,12 @@ public class UrlService {
         Url url = findByShortCode(shortCode);
         repository.delete(url);
     }
+
+    @Scheduled(fixedDelay = 24, timeUnit = TimeUnit.HOURS)
+    public void removeExpiredUrls() {
+        repository.deleteByCreatedAtBefore(LocalDateTime.now().minusDays(1));
+    }
+
     private Url findByShortCode(String shortCode) {
         if(shortCode.isEmpty()){
             throw new IllegalArgumentException("Short code is empty");
