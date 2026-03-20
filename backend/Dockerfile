@@ -2,9 +2,7 @@
 FROM gradle:8.14-jdk21 AS build
 WORKDIR /app
 
-COPY build.gradle settings.gradle ./
-RUN gradle dependencies --no-daemon || true
-COPY src/ src/
+COPY . .
 RUN gradle bootJar --no-daemon
 
 # Stage 2: Run
