@@ -10,7 +10,7 @@ Fully containerized with Docker, Docker Compose and a deployed frontend demo on 
 ## Getting Started
 
 ### Prerequisites
-- Docker and Docker Compose
+- Docker
 - Java 21 (for local backend development)
 - Node.js 18+ (for local frontend development)
 
