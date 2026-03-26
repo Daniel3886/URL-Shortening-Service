@@ -11,6 +11,16 @@ spring:
     password: ${DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
+  data:
+    redis:
+      host: redis   # docker compose service name
+      port: 6379
+      username: ${REDIS_USERNAME:user}
+      password: ${REDIS_PASSWORD:secret}
+
+  cache:
+    type: redis
+
   flyway:
     enabled: true
     locations: classpath:db/migration
