@@ -19,6 +19,7 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UrlResponse> shortenUrl(@RequestBody UrlRequest urlRequest) {
 
         UrlResponse response =  urlService.shortenUrl(urlRequest);
@@ -26,6 +27,7 @@ public class UrlController {
     }
 
     @GetMapping("/{shortCode}")
+    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode){
         String originalUrl = urlService.getRedirectUrl(shortCode);
 
@@ -36,6 +38,7 @@ public class UrlController {
     }
 
     @PutMapping("/{shortCode}")
+    @ResponseStatus(HttpStatus.OK)
     public UrlResponse updateUrl(
             @PathVariable String shortCode,
             @RequestBody UrlRequest urlRequest
@@ -44,12 +47,14 @@ public class UrlController {
     }
 
     @DeleteMapping("/{shortCode}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUrl(@PathVariable String shortCode) {
         urlService.removeUrl(shortCode);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{shortCode}/stats")
+    @ResponseStatus(HttpStatus.OK)
     public UrlStatsResponse getUrlDetails(@PathVariable String shortCode) {
         return urlService.getUrlByShortCode(shortCode);
     }
