@@ -1,15 +1,12 @@
 package org.springboot.urlshorteningservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springboot.urlshorteningservice.dto.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springboot.urlshorteningservice.dto.UrlRequest;
-import org.springboot.urlshorteningservice.dto.UrlResponse;
-import org.springboot.urlshorteningservice.dto.UrlStatsResponse;
 import org.springboot.urlshorteningservice.model.Url;
 import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.InvalidUrlException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,12 +27,12 @@ public class UrlService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    public UrlResponse shortenUrl(UrlRequest request) throws InvalidUrlException {
+    public UrlResponse shortenUrl(CreateUrlRequest request) {
 
-        validateUrl(request.getUrl());
+        validateUrl(request.url());
 
         Url entity = new Url();
-        entity.setUrl(request.getUrl());
+        entity.setUrl(request.url());
         entity.setCreatedAt(LocalDateTime.now());
         entity.setUpdatedAt(LocalDateTime.now());
         String shortCode = generateShortcode();
@@ -43,13 +40,13 @@ public class UrlService {
 
         repository.save(entity);
 
-        return UrlResponse.builder()
-                .id(entity.getId())
-                .url(domain + "shorten/" + shortCode)
-                .shortCode(shortCode)
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .build();
+        return new UrlResponse(
+                entity.getId(),
+                shortCode,
+                domain + "shorten/" + shortCode,
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
+        );
     }
 
     public UrlStatsResponse getUrlByShortCode(String shortCode) {
@@ -68,21 +65,21 @@ public class UrlService {
         return url.getUrl();
     }
 
-    public UrlResponse updateUrl(String shortCode, UrlRequest urlRequest) {
+    public UrlResponse updateUrl(String shortCode, CreateUrlRequest urlRequest) {
         Url url = findByShortCode(shortCode);
-        validateUrl(urlRequest.getUrl());
+        validateUrl(urlRequest.url());
 
-        url.setUrl(urlRequest.getUrl());
+        url.setUrl(urlRequest.url());
         url.setUpdatedAt(LocalDateTime.now());
         repository.save(url);
 
-        return UrlResponse.builder()
-                .id(url.getId())
-                .url(urlRequest.getUrl())
-                .shortCode(shortCode)
-                .createdAt(url.getCreatedAt())
-                .updatedAt(url.getUpdatedAt())
-                .build();
+        return new UrlResponse (
+                url.getId(),
+                urlRequest.url(),
+                shortCode,
+                url.getCreatedAt(),
+                url.getUpdatedAt()
+        );
     }
 
     public void removeUrl(String shortCode) {
@@ -104,7 +101,7 @@ public class UrlService {
                 .orElseThrow(() -> new NoSuchElementException("Short code not found"));
     }
 
-    private void validateUrl(String url) throws InvalidUrlException {
+    private void validateUrl(String url) {
         try {
             if(url.isEmpty()){
                 throw new IllegalArgumentException("URL is empty");

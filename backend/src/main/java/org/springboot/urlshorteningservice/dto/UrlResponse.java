@@ -1,10 +1,7 @@
 package org.springboot.urlshorteningservice.dto;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-
-@Getter
-@SuperBuilder
-public class UrlResponse extends UrlStatsResponse {}
-
+public record UrlResponse(UUID id, String shortCode, String url,
+                   LocalDateTime createdAt, LocalDateTime updatedAt){}
