@@ -5,6 +5,10 @@ import org.springboot.urlshorteningservice.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springboot.urlshorteningservice.model.Url;
 import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +31,12 @@ public class UrlService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
+    @CachePut(value = "URL_CACHE", key = "#result.url")
     public UrlResponse shortenUrl(CreateUrlRequest request) {
 
         validateUrl(request.url());
 
-        Url entity = new Url();
+        var entity = new Url();
         entity.setUrl(request.url());
         entity.setCreatedAt(LocalDateTime.now());
         entity.setUpdatedAt(LocalDateTime.now());
@@ -42,15 +47,16 @@ public class UrlService {
 
         return new UrlResponse(
                 entity.getId(),
-                shortCode,
                 domain + "shorten/" + shortCode,
+                shortCode,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
     }
 
+    @Cacheable(value = "URL_CACHE", key = "#shortCode") // UrlResponse - created in shortenUrl
     public UrlStatsResponse getUrlByShortCode(String shortCode) {
-        Url url = findByShortCode(shortCode);
+        var url = findByShortCode(shortCode);
         return new UrlStatsResponse(
             url.getId(),
             url.getUrl(),
@@ -60,13 +66,18 @@ public class UrlService {
         );
     }
 
+    @Cacheable(value = "URL_REDIRECT", key = "#shortCode")
     public String getRedirectUrl(String shortCode) {
-        Url url = findByShortCode(shortCode);
+        var url = findByShortCode(shortCode);
         return url.getUrl();
     }
 
+    @Caching(
+            evict = @CacheEvict(value = "URL_CACHE", key = "#shortCode"),
+            put = @CachePut(value = "URL_REDIRECT", key = "#shortCode")
+    )
     public UrlResponse updateUrl(String shortCode, CreateUrlRequest urlRequest) {
-        Url url = findByShortCode(shortCode);
+        var url = findByShortCode(shortCode);
         validateUrl(urlRequest.url());
 
         url.setUrl(urlRequest.url());
@@ -82,11 +93,16 @@ public class UrlService {
         );
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "URL_CACHE", key = "#shortCode"),
+            @CacheEvict(value = "URL_REDIRECT", key = "#shortCode"),
+    })
     public void removeUrl(String shortCode) {
-        Url url = findByShortCode(shortCode);
+        var url = findByShortCode(shortCode);
         repository.delete(url);
     }
 
+    // TODO: add the time delay to application.yaml
     @Scheduled(fixedDelay = 24, timeUnit = TimeUnit.HOURS)
     public void removeExpiredUrls() {
         repository.deleteByCreatedAtBefore(LocalDateTime.now().minusDays(1));

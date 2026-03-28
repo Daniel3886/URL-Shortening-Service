@@ -13,13 +13,11 @@ import java.net.URI;
 @RequestMapping("/shorten")
 @RequiredArgsConstructor
 public class UrlController {
-
     private final UrlService urlService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UrlResponse shortenUrl(@RequestBody CreateUrlRequest urlDto) {
-
         return urlService.shortenUrl(urlDto);
     }
 
