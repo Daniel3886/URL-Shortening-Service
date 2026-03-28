@@ -104,7 +104,7 @@ export function UrlResultStats({
 
   return (
     <div className="mt-4 rounded-xl border border-border bg-card p-4 text-left shadow-sm">
-      <p className="text-sm text-muted-foreground">Short URL for {shortCode}</p>
+      <p className="text-sm text-muted-foreground">Short URL for: {shortCode}</p>
 
       <div className="mt-2 flex items-center justify-between gap-3">
         {isEditing ? (
