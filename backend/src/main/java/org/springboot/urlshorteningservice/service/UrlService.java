@@ -12,8 +12,6 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -34,8 +32,6 @@ public class UrlService {
     @CachePut(value = "URL_CACHE", key = "#result.url")
     public UrlResponse shortenUrl(CreateUrlRequest request) {
 
-        validateUrl(request.url());
-
         var entity = new Url();
         entity.setUrl(request.url());
         entity.setCreatedAt(LocalDateTime.now());
@@ -54,7 +50,7 @@ public class UrlService {
         );
     }
 
-    @Cacheable(value = "URL_CACHE", key = "#shortCode") // UrlResponse - created in shortenUrl
+    @Cacheable(value = "URL_CACHE", key = "#shortCode")
     public UrlStatsResponse getUrlByShortCode(String shortCode) {
         var url = findByShortCode(shortCode);
         return new UrlStatsResponse(
@@ -78,7 +74,6 @@ public class UrlService {
     )
     public UrlResponse updateUrl(String shortCode, CreateUrlRequest urlRequest) {
         var url = findByShortCode(shortCode);
-        validateUrl(urlRequest.url());
 
         url.setUrl(urlRequest.url());
         url.setUpdatedAt(LocalDateTime.now());
@@ -115,21 +110,6 @@ public class UrlService {
 
         return repository.findByShortCode(shortCode)
                 .orElseThrow(() -> new NoSuchElementException("Short code not found"));
-    }
-
-    private void validateUrl(String url) {
-        try {
-            if(url.isEmpty()){
-                throw new IllegalArgumentException("URL is empty");
-            }
-
-            URI uri = new URI(url);
-            if (!"http".equals(uri.getScheme()) && !"https".equals(uri.getScheme())) {
-                throw new IllegalArgumentException("URL must start with http or https");
-            }
-        } catch (URISyntaxException e){
-            throw new IllegalArgumentException("Invalid URL format: " + e.getMessage());
-        }
     }
 
     private String generateShortcode() {
