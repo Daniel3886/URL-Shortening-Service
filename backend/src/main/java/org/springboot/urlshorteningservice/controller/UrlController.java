@@ -1,5 +1,6 @@
 package org.springboot.urlshorteningservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springboot.urlshorteningservice.dto.*;
 import org.springboot.urlshorteningservice.service.UrlService;
@@ -17,7 +18,7 @@ public class UrlController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UrlResponse shortenUrl(@RequestBody CreateUrlRequest urlDto) {
+    public UrlResponse shortenUrl(@RequestBody @Valid CreateUrlRequest urlDto) {
         return urlService.shortenUrl(urlDto);
     }
 
@@ -35,7 +36,7 @@ public class UrlController {
     @ResponseStatus(HttpStatus.OK)
     public UrlResponse updateUrl(
             @PathVariable String shortCode,
-            @RequestBody CreateUrlRequest urlRequest
+            @RequestBody @Valid CreateUrlRequest urlRequest
     ) {
         return urlService.updateUrl(shortCode, urlRequest);
     }
