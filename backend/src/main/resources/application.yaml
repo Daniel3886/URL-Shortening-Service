@@ -13,10 +13,9 @@ spring:
 
   data:
     redis:
-      host: redis   # docker compose service name
+      host: redis
       port: 6379
-      username: ${REDIS_USERNAME:user}
-      password: ${REDIS_PASSWORD:secret}
+      password: ${REDIS_PASSWORD}
 
   cache:
     type: redis
