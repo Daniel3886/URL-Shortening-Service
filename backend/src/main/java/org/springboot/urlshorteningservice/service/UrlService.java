@@ -13,9 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +24,10 @@ public class UrlService {
     private final UrlRepo repository;
     @Value("${app.base-url}")
     private String domain;
+
+    @Value("${app.ttl}")
+    private Duration fixedDelay;
+
     private static final String BASE62 =
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -97,10 +101,9 @@ public class UrlService {
         repository.delete(url);
     }
 
-    // TODO: add the time delay to application.yaml
-    @Scheduled(fixedDelay = 24, timeUnit = TimeUnit.HOURS)
+    @Scheduled(fixedDelayString = "${app.ttl}")
     public void removeExpiredUrls() {
-        repository.deleteByCreatedAtBefore(LocalDateTime.now().minusDays(1));
+        repository.deleteByCreatedAtBefore(LocalDateTime.now().minus(fixedDelay));
     }
 
     private Url findByShortCode(String shortCode) {

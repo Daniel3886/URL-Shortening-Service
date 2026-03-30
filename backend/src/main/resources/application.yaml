@@ -27,3 +27,4 @@ spring:
 
 app:
   base-url: ${BASE_URL:http://localhost:8080/}
+  ttl: 24h # auto removal and Redis cache TTL

@@ -1,5 +1,6 @@
 package org.springboot.urlshorteningservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -14,8 +15,9 @@ import java.time.Duration;
 @Configuration
 public class RedisConfig {
 
-    // TODO: ADD the time to live to applcaition.yaml
-    private static final Duration CACHE_TTL = Duration.ofHours(24);
+    @Value("${app.ttl}")
+    private Duration cacheTtl;
+
     private static final GenericJacksonJsonRedisSerializer CACHE_VALUE_SERIALIZER =
             GenericJacksonJsonRedisSerializer.builder()
                     .enableDefaultTyping(
@@ -28,7 +30,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(CACHE_TTL)
+                .entryTtl(cacheTtl)
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
                         CACHE_VALUE_SERIALIZER
