@@ -30,7 +30,7 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_LOG_DIRS: /var/lib/kafka/data
-      CLUSTER_ID: "kafka-cluster-1"
+      CLUSTER_ID: "DCRGIUbVSWCN4IVZjnvPsA"
 
   # frontend:
   #   build:
