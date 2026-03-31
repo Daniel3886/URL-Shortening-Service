@@ -1,9 +1,9 @@
 CREATE TABLE url
 (
-    id           UUID          NOT NULL,
-    short_code   VARCHAR(255)  NOT NULL,
-    url VARCHAR(2048) NOT NULL,
-    created_at   TIMESTAMP WITHOUT TIME ZONE,
+    id         UUID              NOT NULL,
+    short_code VARCHAR(255)      NOT NULL,
+    url        VARCHAR(2048)     NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE,
     CONSTRAINT pk_url PRIMARY KEY (id)
 );
 
