@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Url_Clicks {
+public class UrlClicks {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
