@@ -31,5 +31,5 @@ public class Url {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Url_Clicks> urlClicks;
+    private List<UrlClicks> urlClicks;
 }
