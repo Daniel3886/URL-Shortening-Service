@@ -73,8 +73,10 @@ public class UrlService {
     }
 
     @Caching(
-            evict = @CacheEvict(value = "URL_CACHE", key = "#shortCode"),
-            put = @CachePut(value = "URL_REDIRECT", key = "#shortCode")
+        evict = {
+                @CacheEvict(value = "URL_CACHE", key = "#shortCode"),
+                @CacheEvict(value = "URL_REDIRECT", key = "#shortCode")
+        }
     )
     public UrlResponse updateUrl(String shortCode, CreateUrlRequest urlRequest) {
         var url = findByShortCode(shortCode);
