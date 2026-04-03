@@ -1,5 +1,6 @@
 package org.springboot.urlshorteningservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springboot.urlshorteningservice.dto.*;
@@ -23,8 +24,11 @@ public class UrlController {
     }
 
     @GetMapping("/{shortCode}")
-    public ResponseEntity<Void> redirectToOriginalUrl(@PathVariable String shortCode){
-        String originalUrl = urlService.getRedirectUrl(shortCode);
+    public ResponseEntity<Void> redirectToOriginalUrl(
+            @PathVariable String shortCode,
+            HttpServletRequest request
+    ){
+        String originalUrl = urlService.handleRedirect(shortCode, request);
 
         return ResponseEntity
                 .status(HttpStatus.FOUND)

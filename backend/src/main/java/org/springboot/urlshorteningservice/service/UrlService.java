@@ -1,32 +1,41 @@
 package org.springboot.urlshorteningservice.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springboot.urlshorteningservice.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springboot.urlshorteningservice.model.Url;
-import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
+import org.springboot.urlshorteningservice.repository.UrlRepo;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UrlService {
 
     private final UrlRepo repository;
+    private final UrlClickProducerService producerService;
     @Value("${app.base-url}")
     private String domain;
 
     @Value("${app.ttl}")
     private Duration fixedDelay;
+
+    @Lazy
+    @Autowired
+    private UrlService self;
 
     private static final String BASE62 =
             "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -70,6 +79,15 @@ public class UrlService {
     public String getRedirectUrl(String shortCode) {
         var url = findByShortCode(shortCode);
         return url.getUrl();
+    }
+
+    public String handleRedirect(String shortCode, HttpServletRequest request) {
+        String url = self.getRedirectUrl(shortCode);
+        producerService.sendUrlClickedEvent
+                (new UrlClickedEvent(shortCode, request.getRemoteAddr(), Instant.now().toString())
+        );
+
+        return url;
     }
 
     @Caching(
