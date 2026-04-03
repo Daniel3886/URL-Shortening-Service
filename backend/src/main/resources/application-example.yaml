@@ -1,22 +1,22 @@
+# Copy this file to application-local.yaml and fill in your actual values.
+# application-local.yaml is gitignored and never committed.
 spring:
   application:
     name: URL-Shortening-Service
   jpa:
     hibernate:
       ddl-auto: validate
-
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
-    username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:postgres}
+    url: jdbc:postgresql://localhost:5432/your_database_name
+    username: your_postgres_username
+    password: your_postgres_password
     driver-class-name: org.postgresql.Driver
 
-# TODO: Figure out how to make the kafka and redis work fully on docker containers too
   data:
     redis:
       host: localhost
       port: 6379
-      password: ${REDIS_PASSWORD:secret}
+      password: your_redis_password
 
   cache:
     type: redis
@@ -40,5 +40,5 @@ spring:
     baseline-on-migrate: true
 
 app:
-  base-url: ${BASE_URL:http://localhost:8080/}
+  base-url: http://localhost:8080/
   ttl: 24h # auto removal and Redis cache TTL
