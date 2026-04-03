@@ -1,4 +1,4 @@
-package org.springboot.urlshorteningservice.reposiotry;
+package org.springboot.urlshorteningservice.repository;
 
 import jakarta.transaction.Transactional;
 import org.springboot.urlshorteningservice.model.Url;

@@ -1,4 +1,4 @@
-package org.springboot.urlshorteningservice.reposiotry;
+package org.springboot.urlshorteningservice.repository;
 
 import org.springboot.urlshorteningservice.model.UrlClicks;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springboot.urlshorteningservice.dto.UrlClickedEvent;
 import org.springboot.urlshorteningservice.model.Url;
 import org.springboot.urlshorteningservice.model.UrlClicks;
-import org.springboot.urlshorteningservice.reposiotry.UrlClickRepo;
-import org.springboot.urlshorteningservice.reposiotry.UrlRepo;
+import org.springboot.urlshorteningservice.repository.UrlClickRepo;
+import org.springboot.urlshorteningservice.repository.UrlRepo;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
