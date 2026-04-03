@@ -107,7 +107,6 @@ Base path: `/shorten`
 | Redis                   | Redirect caching            |
 | Apache Kafka (KRaft)    | Async click event streaming |
 | Bucket4j                | Per-IP rate limiting        |
-| Lombok                  | Boilerplate reduction       |
 | Docker                  | Containerization            |
 
 **Frontend**
